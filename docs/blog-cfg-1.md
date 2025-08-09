@@ -110,6 +110,10 @@ uv run python -m cli cfg-math-suite --models gpt-5,gpt-5-mini
   - gpt-5-mini は 6-11 秒程度
   - gpt-5-nano は 7-8 秒程度
 
+詳細なレポートは以下から確認できます。
+
+https://github.com/autotaker/llm-playground-cfg/blob/main/docs/experiments/cfg-math/run-20250810-073337.md
+
 ## 難しい問題のサンプル
 
 より複雑な問題でも正しく式を生成できるか確認しました。
