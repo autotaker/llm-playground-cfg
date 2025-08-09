@@ -23,11 +23,11 @@ uv run python -m cli ping
 ### Grammar（Lark）制約ツールのサンプル（四則演算）
 
 ```bash
-uv run python -m cli cfg-math
+uv run python -m cli cfg-math --prompt "add four plus four" --expect 8
 ```
 
 - 備考: Grammar 制約ツールは `gpt-5` が必要です。
-- 実行結果は数式（例: `4 + 4`）として出力されます。
+- 実行結果は式の妥当性（Larkでパース）と評価結果を表示し、`--expect` を指定すると pass/fail を示します。
 
 ### モデルの明示指定
 

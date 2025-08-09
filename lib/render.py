@@ -5,6 +5,7 @@ from typing import Any, Iterable, List, Optional
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
+from rich.text import Text
 
 
 console = Console()
@@ -83,9 +84,6 @@ def safe_eval_add_mul(expr: str) -> Optional[int]:
 
 
 def show_math_result(expr: str) -> None:
-    from rich.align import Align
-    from rich.text import Text
-
     result = safe_eval_add_mul(expr)
     t = Table(box=None, show_header=False)
     t.add_column("Field", style="bold cyan")
@@ -94,3 +92,18 @@ def show_math_result(expr: str) -> None:
     t.add_row("Result", str(result) if result is not None else "(n/a)")
     console.print(Panel.fit(t, title="Math Expression", border_style="cyan"))
 
+
+def show_arith_validation(prompt: str, expression: str, parsed_ok: bool, value: Optional[float], expected: Optional[float]) -> None:
+    table = Table(box=None, show_header=False)
+    table.add_column("Field", style="bold cyan")
+    table.add_column("Value")
+    table.add_row("Prompt", prompt)
+    table.add_row("Expression", expression or "(empty)")
+    table.add_row("Parsed", "yes" if parsed_ok else "no")
+    if value is not None:
+        table.add_row("Value", str(int(value)) if float(value).is_integer() else f"{value}")
+    if expected is not None:
+        status = "pass" if (value is not None and abs(value - expected) < 1e-9) else "fail"
+        table.add_row("Expected", str(int(expected)) if float(expected).is_integer() else f"{expected}")
+        table.add_row("Check", status)
+    console.print(Panel.fit(table, title="CFG Math Validation", border_style="green" if parsed_ok else "red"))

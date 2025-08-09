@@ -15,10 +15,10 @@ Scope: docs/tickets/issue-1/TASK.md に基づき、CFG/正規表現制約での�
 ## CFG 実験（Lark）
 
 ### 四則演算（算術式）
-- [ ] 文法定義（加減乗除、括弧、整数）
-- [ ] プロンプト・API 呼び出し（grammar= Lark）
-- [ ] 検証：Lark でパースし、評価の整合性チェック（安全な評価器）
-- [ ] サンプル出力・失敗例の記録
+- [x] 文法定義（加減乗除、括弧、整数）
+- [x] プロンプト・API 呼び出し（grammar= Lark）
+- [x] 検証：Lark でパースし、評価の整合性チェック（安全な評価器）
+- [x] サンプル出力・失敗例の記録（docs/experiments/cfg-math/*.md）
 
 ### SQL（最小サブセット）
 - [ ] 文法定義（SELECT FROM WHERE LIMIT、識別子/リテラルの簡易化）
