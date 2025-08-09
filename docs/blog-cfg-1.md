@@ -18,6 +18,8 @@ https://github.com/autotaker/llm-playground-cfg
 - SQL クエリの生成
 - 独自 DSL のフロー定義
 
+https://platform.openai.com/docs/guides/function-calling#context-free-grammars
+
 # 今回試したこと
 
 - GPT-5 の Responses API で、カスタムツールに Lark 構文を渡す「文法制約」を試しました。
@@ -106,7 +108,7 @@ uv run python -m cli cfg-math-suite --models gpt-5,gpt-5-mini
 
 - すべてのモデルで正しい式と値を返しました。
 - 実行時間はケースやタイミングでばらつきあり。
-  - gpt-5 は 8-12 秒程度
+  - gpt-5 は 10-15 秒程度
   - gpt-5-mini は 6-11 秒程度
   - gpt-5-nano は 7-8 秒程度
 
