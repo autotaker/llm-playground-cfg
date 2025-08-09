@@ -4,11 +4,12 @@ import argparse
 import sys
 
 from lib.openai_client import responses_create, output_text
+from lib import render
 
 
 def cmd_ping(args: argparse.Namespace) -> int:
     resp = responses_create(input="Say a short friendly hello.", model=args.model)
-    print(output_text(resp))
+    render.print_text(output_text(resp))
     return 0
 
 
@@ -43,7 +44,13 @@ MUL: "*"
         tools=tools,
         model=args.model,
     )
-    print(output_text(resp))
+    render.show_custom_tool_calls(resp)
+    # Try to extract the first tool call and show evaluated result
+    calls = render.extract_custom_tool_calls(resp)
+    if calls:
+        expr = str(calls[0].get("input", "")).strip()
+        if expr:
+            render.show_math_result(expr)
     return 0
 
 
@@ -69,4 +76,3 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

@@ -8,6 +8,7 @@ dependencies = [
     "openai>=1.99.6",
     "lark>=1.1.9",
     "pytest>=8.0",
+    "rich>=13.7.1",
 ]
 
 [project.scripts]
