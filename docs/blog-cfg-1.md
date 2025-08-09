@@ -1,5 +1,5 @@
 ---
-title: GPT-5のCFG function callingを試してみた Part 1: 四則演算
+title: "GPT-5のCFG function callingを試してみた Part 1: 四則演算"
 ---
 
 # はじめに
