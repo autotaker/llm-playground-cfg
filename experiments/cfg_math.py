@@ -5,7 +5,7 @@ from typing import Any, Optional, List, Tuple
 
 from lark import Lark
 
-from lib.openai_client import responses_create, output_text
+from lib.openai_client import responses_create, output_text, extract_usage
 
 
 # Lark grammar: + - * / with parentheses and integers, ignoring inline spaces
@@ -66,6 +66,9 @@ class MathRunResult:
     parsed_ok: bool
     value: Optional[float]
     expected: Optional[float]
+    model: Optional[str] = None
+    usage_input_tokens: Optional[int] = None
+    usage_output_tokens: Optional[int] = None
 
 
 def run_cfg_math(
@@ -86,6 +89,8 @@ def run_cfg_math(
     # Ask the model to use the tool to produce only an expression
     inp = f"Use the math_exp tool to produce only one expression for: {prompt}"
     resp = responses_create(input=inp, tools=tools, model=model)
+    used_model = getattr(resp, "model", None) or model
+    in_tok, out_tok = extract_usage(resp)
 
     # Extract expression text from custom tool call if present; fallback to output_text
     expr: str = ""
@@ -119,6 +124,9 @@ def run_cfg_math(
         parsed_ok=parsed_ok,
         value=value,
         expected=expected,
+        model=used_model,
+        usage_input_tokens=in_tok,
+        usage_output_tokens=out_tok,
     )
 
 

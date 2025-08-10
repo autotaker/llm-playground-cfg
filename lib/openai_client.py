@@ -56,3 +56,25 @@ def responses_create(
 def output_text(resp: Any) -> str:
     return getattr(resp, "output_text", None) or getattr(resp, "output", None) or str(resp)
 
+
+def extract_usage(resp: Any) -> tuple[Optional[int], Optional[int]]:
+    """Return (input_tokens, output_tokens) if available, else (None, None)."""
+    u = getattr(resp, "usage", None)
+    if u is None and isinstance(resp, dict):
+        u = resp.get("usage")
+
+    def _get(obj: Any, key: str) -> Optional[int]:
+        if obj is None:
+            return None
+        if hasattr(obj, key):
+            val = getattr(obj, key)
+        elif isinstance(obj, dict):
+            val = obj.get(key)
+        else:
+            val = None
+        try:
+            return int(val) if val is not None else None
+        except Exception:
+            return None
+
+    return _get(u, "input_tokens"), _get(u, "output_tokens")

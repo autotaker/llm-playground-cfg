@@ -173,6 +173,7 @@ dependencies = [
     { name = "openai" },
     { name = "pytest" },
     { name = "rich" },
+    { name = "tqdm" },
 ]
 
 [package.metadata]
@@ -181,6 +182,7 @@ requires-dist = [
     { name = "openai", specifier = ">=1.99.6" },
     { name = "pytest", specifier = ">=8.0" },
     { name = "rich", specifier = ">=13.7.1" },
+    { name = "tqdm", specifier = ">=4.66.0" },
 ]
 
 [[package]]

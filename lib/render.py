@@ -107,3 +107,50 @@ def show_arith_validation(prompt: str, expression: str, parsed_ok: bool, value: 
         table.add_row("Expected", str(int(expected)) if float(expected).is_integer() else f"{expected}")
         table.add_row("Check", status)
     console.print(Panel.fit(table, title="CFG Math Validation", border_style="green" if parsed_ok else "red"))
+
+
+def show_sql_validation(
+    prompt: str,
+    query: str,
+    parsed_ok: bool,
+    executed_ok: bool,
+    columns: list[str] | None,
+    rows_count: int,
+    error: str | None,
+    expected_rows: int | None = None,
+) -> None:
+    title_style = "green" if executed_ok else ("yellow" if parsed_ok else "red")
+    table = Table(box=None, show_header=False)
+    table.add_column("Field", style="bold cyan")
+    table.add_column("Value")
+    table.add_row("Prompt", prompt)
+    table.add_row("Query", query or "(empty)")
+    table.add_row("Parsed", "yes" if parsed_ok else "no")
+    table.add_row("Executed", "yes" if executed_ok else "no")
+    if columns:
+        table.add_row("Columns", ", ".join(columns))
+    table.add_row("Rows", str(rows_count))
+    if expected_rows is not None:
+        status = "pass" if executed_ok and rows_count == expected_rows else "fail"
+        table.add_row("Expected rows", str(expected_rows))
+        table.add_row("Check", status)
+    if error and not executed_ok:
+        table.add_row("Error", error)
+    console.print(Panel.fit(table, title="CFG SQL Validation", border_style=title_style))
+
+
+def show_run_stats(
+    model: str | None,
+    seconds: float,
+    input_tokens: int | None,
+    output_tokens: int | None,
+) -> None:
+    table = Table(box=None, show_header=False)
+    table.add_column("Field", style="bold cyan")
+    table.add_column("Value")
+    if model:
+        table.add_row("Model", model)
+    table.add_row("Time (s)", f"{seconds:.2f}")
+    if input_tokens is not None or output_tokens is not None:
+        table.add_row("Tokens", f"in={input_tokens or 0}, out={output_tokens or 0}")
+    console.print(Panel.fit(table, title="Run Stats", border_style="blue"))
