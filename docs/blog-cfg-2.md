@@ -6,6 +6,10 @@ title: "GPT-5のCFG function callingを試してみた Part 2: SQL"
 
 本記事は、Responses API の CFG（文法制約）機能を用いて「SQL の最小サブセット」を安全に生成・検証した記録です。前編（Part 1）では四則演算の式生成と検証を行いましたが、本稿では SQL（SELECT/JOIN/WHERE/LIMIT）に範囲を広げ、日本語の自然文から文法的に正しいクエリを強制生成し、SQLite で実行・評価するまでを一気通貫で行います。
 
+前回の記事はこちら
+
+https://qiita.com/autotaker1984/items/8fa38a84bdcc45371fe3
+
 # 既存の JSON ベースの SQL 生成との違い
 
 従来の Function Calling による SQL 生成では JSON の文字列として生成させることが一般的でしたが、CFG を使用することで以下の課題がありました。
@@ -21,6 +25,10 @@ CFG を使用することで、これらの課題を解決し、より安全で�
 - **セキュリティの向上**: CFG を使用することで、生成される SQL が安全な操作のみを含むように制約を設けることができ、SQL インジェクションのリスクを低減します。
 
 # 実験セットアップ
+
+実験のソースコードは以下のリポジトリにまとめています。
+
+https://github.com/autotaker/llm-playground-cfg
 
 - Python 3.12 / パッケージ管理: uv
 - 主要依存: openai, lark, rich, tqdm, pytest
@@ -292,8 +300,7 @@ def default_sql_cases() -> List[Tuple[str, Optional[int]]]:
 - 文法制約（CFG）により、未定義トークンや不完全な構文がほぼ排除され、SQL の構造が安定
 - DDL を明示した指示により、列名・結合キーの整合性が向上し、`table.column` 参照が一貫
 - 日本語の曖昧表現でも JOIN と複合 WHERE（括弧/優先順位含む）を堅実に構築
-- 文法制約上不可能なケース（INSERT/集計関数）では、エラーを返すパターンと、
-  代替の SQL を提案するパターンがある
+- 文法制約上不可能なケース（INSERT/集計関数）では、エラーを返すパターンと、代替の SQL を提案するパターンがある
 
 # 次の一手
 
